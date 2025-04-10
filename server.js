@@ -13,6 +13,19 @@ app.listen(PORT, () => {
   console.log(`Running on port ${PORT}`);
 });
 
+process.on("uncaughtException", (err) => {
+  console.log(err.name, err.message);
+  console.log("uncaught exception occured!!, shutting down...");
+});
+
+process.on("unhandledRejection", (err) => {
+  console.log(err.name, err.message);
+  console.log("unhandled rejection occurred!!, shutting down...");
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
 // body parser for request body
 app.use(express.json());
 
@@ -23,5 +36,12 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 
 app.use(cors("*"));
+
+app.all("*", async (req, res, next) => {
+  const error = new CustomError(`can't find ${req.url} on the server!`, 404);
+  next(error);
+});
+
+app.use(globalErrorHandler);
 
 export default app;
