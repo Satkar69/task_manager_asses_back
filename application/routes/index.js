@@ -13,7 +13,9 @@ appRouter.use(globalPrefix, userAuthRouter);
 // authenticated routes
 appRouter.use(authenticate);
 
+// user routes
 appRouter.use(globalPrefix, userRouter);
+// user-task routes
 appRouter.use(globalPrefix, userTaskRouter);
 
 export default appRouter;
