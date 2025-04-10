@@ -7,11 +7,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import morgan from "morgan";
 
-import connectDB from "./frameworks/data-services/mongo/connection.js";
-
 import globalExceptionHandler from "./application/exception/index.js";
-
-connectDB();
 
 const app = express();
 
