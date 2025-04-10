@@ -1,15 +1,12 @@
 import db from "../../../prisma/index.js";
 import CustomError from "../../../utils/CustomError.js";
-import {
-  hashPassword,
-  validatePassword,
-} from "../../../lib/bcrypt/bcrypt.lib.js";
-import { generateToken } from "../../../lib/jwt/jwt.lib.js";
+import { hashPassword, validatePassword } from "../../../lib/bcrypt/bcrypt.js";
+import { generateToken } from "../../../lib/jwt/jwt.js";
 
-export const registerNewUser = async ({ email, username, password }) => {
-  const existingUser = await db.User.findUnique({
+export const registerNewUser = async ({ username, email, password }) => {
+  const existingUser = await db.user.findFirst({
     where: {
-      OR: [{ email }, { username }],
+      OR: [{ username }, { email }],
     },
   });
 
@@ -18,19 +15,21 @@ export const registerNewUser = async ({ email, username, password }) => {
   }
 
   const hashedPassword = await hashPassword(password);
-  const newUser = await db.User.create({
+  const newUser = await db.user.create({
     data: {
-      email,
       username,
+      email,
       password: hashedPassword,
     },
   });
 
+  delete newUser.password;
+
   return newUser;
 };
 
-export const loginUser = async ({ email, username, password }) => {
-  const existingUser = await db.User.findUnique({
+export const loginUser = async ({ username, email, password }) => {
+  const existingUser = await db.user.findFirst({
     where: {
       OR: [{ email }, { username }],
     },
@@ -51,7 +50,9 @@ export const loginUser = async ({ email, username, password }) => {
     throw new CustomError("Invalid password", 401);
   }
 
-  const token = await generateToken({ id: existingUser.id });
+  const accessToken = await generateToken({ id: existingUser.id });
 
-  return token;
+  delete existingUser.password;
+
+  return { accessToken, user: existingUser };
 };

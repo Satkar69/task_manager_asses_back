@@ -8,6 +8,7 @@ import cors from "cors";
 import morgan from "morgan";
 
 import globalExceptionHandler from "./application/exception/index.js";
+import appRouter from "./application/routes/index.js";
 
 const app = express();
 
@@ -40,6 +41,8 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 
 app.use(cors("*"));
+
+app.use(appRouter);
 
 app.all(/(.*)/, async (req, res, next) => {
   const error = new CustomError(`can't find ${req.url} on the server!`, 404);
