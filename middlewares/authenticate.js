@@ -10,13 +10,8 @@ const authenticate = asyncHandler(async (req, res, next) => {
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
-    console.log("token via authorization header bearer");
     token = req.headers.authorization.split(" ")[1]; // set via client
-  } else if (req.cookies.token) {
-    console.log("token via cookie storage");
-    token = req.cookies.token; // for testing apis in server side
   }
-
   if (!token) {
     const error = new CustomError("Authentication token is missing", 401);
     return next(error);
@@ -53,3 +48,5 @@ const authenticate = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 });
+
+export default authenticate;
