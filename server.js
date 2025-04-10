@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import morgan from "morgan";
 
+import CustomError from "./utils/CustomError.js";
 import globalExceptionHandler from "./application/exception/index.js";
 import appRouter from "./application/routes/index.js";
 

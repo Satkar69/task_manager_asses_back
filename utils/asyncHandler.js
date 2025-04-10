@@ -12,6 +12,9 @@
  */
 const asyncHandler = (func) => {
   return (req, res, next) => {
+    if (req.params && req.params.id) {
+      req.params.id = Number(req.params.id);
+    }
     func(req, res, next).catch((err) => next(err));
   };
 };

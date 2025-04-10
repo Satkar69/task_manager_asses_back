@@ -31,7 +31,7 @@ const globalExceptionHandler = (error, req, res, next) => {
     }
 
     // If you throw your own validation error
-    if (error.name === "ValidationError") {
+    if (error.name === "PrismaClientValidationError") {
       error = validationException(error);
     }
 

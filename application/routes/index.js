@@ -1,11 +1,21 @@
 import { Router } from "express";
-import authRouter from "./auth.route.js";
+import authenticate from "../../middlewares/authenticate.js";
+import userAuthRouter from "./auth/user-auth.route.js";
+import userRouter from "./user/user.route.js";
+import userTaskRouter from "./user/user-task/user-task.route.js";
 
 const appRouter = Router();
 
 const globalPrefix = "/api/task-manager";
 
-// auth
-appRouter.use(`${globalPrefix}/auth/user`, authRouter);
+appRouter.use(globalPrefix, userAuthRouter);
+
+// authenticated routes
+appRouter.use(authenticate);
+
+// user routes
+appRouter.use(globalPrefix, userRouter);
+// user-task routes
+appRouter.use(globalPrefix, userTaskRouter);
 
 export default appRouter;
