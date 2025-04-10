@@ -1,10 +1,8 @@
 import CustomError from "../../utils/CustomError.js";
 
 const duplicateKeyException = (error) => {
-  const keyValue = error.keyValue;
-  const message = `A keyValue pair '${Object.keys(keyValue)} : ${Object.values(
-    keyValue
-  )}' already exists`;
+  const target = error.meta?.target?.join(", ") || "field(s)";
+  const message = `A record with the same ${target} already exists.`;
   return new CustomError(message, 400);
 };
 
