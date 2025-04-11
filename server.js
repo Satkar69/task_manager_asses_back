@@ -41,7 +41,7 @@ app.use(morgan("dev"));
 //Parse Cookie header and populate req.cookies with an object keyed by the cookie names
 app.use(cookieParser());
 
-app.use(cors("*"));
+app.use(cors(["*", "http://localhost:3000"]));
 
 app.use(appRouter);
 
