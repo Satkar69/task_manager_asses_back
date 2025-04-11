@@ -43,7 +43,11 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["*", "http://localhost:3000"],
+    origin: [
+      "*",
+      "http://localhost:3000",
+      "https://task-manager-asses-front.vercel.app",
+    ],
     credentials: true,
   })
 );
